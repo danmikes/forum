@@ -1,0 +1,18 @@
+{% extends "base.htm" %}
+
+{% block content %}
+<main class="container">
+  <article class="grid">
+    <div class="text-center">
+      <h2>Profile</h2>
+      <dl>
+        <dt>Username</dt>
+        <dd>{{ user.username }}</dd>
+        <dt>User ID</dt>
+        <dd><kbd>{{ user.user_id[:8] }}...</kbd></dd>
+      </dl>
+      <a href="{{ url_for('main.index') }}" role="button" class="primary">Back to Forum</a>
+    </div>
+  </article>
+</main>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.htm" %}
+
+{% block content %}
+<main class="container">
+  <article class="grid">
+    <div>
+      <hgroup>
+        <h1>New Post</h1>
+      </hgroup>
+
+      <form method="POST">
+        <label>
+          Title
+          <input type="text" name="title" placeholder="Enter post title" required>
+        </label>
+
+        <label>
+          Content
+          <textarea name="content" placeholder="Write your post content here..." rows="10" required></textarea>
+        </label>
+
+        <button type="submit" class="primary">Create Post</button>
+        <a href="{{ url_for('main.index') }}" role="button" class="secondary" style="width: 100%;">Cancel</a>
+      </form>
+    </div>
+  </article>
+</main>
+{% endblock %}

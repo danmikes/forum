@@ -1,0 +1,25 @@
+{% extends "base.htm" %}
+
+{% block content %}
+<main class="container">
+  <article class="grid">
+    <div style="max-width: 400px; margin: 0 auto;">
+      <hgroup style="text-align: center;">
+        <h2>Login</h2>
+      </hgroup>
+
+      <form method="POST">
+        <label for="username">
+          Username
+          <input type="text" id="username" name="username" required>
+        </label>
+        <button type="submit" class="primary">Login</button>
+      </form>
+
+      <footer>
+        <a href="{{ url_for('main.register') }}">Register</a>
+      </footer>
+    </div>
+  </article>
+</main>
+{% endblock %}

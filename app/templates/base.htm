@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#121212">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>{% block title %}Forum | home{% endblock %}</title>
+</head>
+<body>
+  <nav class="container-fluid">
+    <ul>
+      <li><strong><a href="{{ url_for('main.index') }}">Flask Forum</a></strong></li>
+    </ul>
+    <ul>
+      {% if session.username %}
+        <li><a href="{{ url_for('main.create_post') }}">Post</a></li>
+        <li><a href="{{ url_for('main.profile') }}">{{ session.username }}</a></li>
+        <li><a href="{{ url_for('main.logout') }}" role="button" class="secondary">Logout</a></li>
+      {% else %}
+        <li><a href="{{ url_for('main.login') }}" role="button">Login</a></li>
+        <li><a href="{{ url_for('main.register') }}" role="button" class="secondary">Register</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <article class="{{ 'danger' if category == 'error' else 'success' }}">
+            <header>
+              {{ category.title() }}
+            </header>
+            {{ message }}
+          </article>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>

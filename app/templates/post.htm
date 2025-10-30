@@ -1,0 +1,68 @@
+{% extends "base.htm" %}
+
+{% block content %}
+<main class="container">
+  <div class="grid">
+    <div class="col-12 col-md-8">
+      <article>
+        <header>
+          <h1>{{ post.title }}</h1>
+        </header>
+        <p>{{ post.content }}</p>
+        <footer>
+          <div class="grid">
+            <div>
+              <small><strong>By:</strong> {{ post.author_name }}</small>
+            </div>
+            <div class="text-right">
+              <small><strong>Posted : </strong> {{ post.created_at | format_time if post.created_at else 'Recently' }}</small>
+            </div>
+          </div>
+        </footer>
+      </article>
+
+      <section aria-label="Comments">
+        <header>
+          <h2>Comments ({{ comments|length }})</h2>
+        </header>
+
+        {% if session.username %}
+        <form method="POST">
+          <label for="content">
+            Add comment
+            <textarea id="content" name="content" placeholder="Share your thoughts..." rows="3" required></textarea>
+          </label>
+          <button type="submit" class="primary">Post Comment</button>
+        </form>
+        {% else %}
+        <article class="secondary">
+          <p>Please <a href="{{ url_for('main.login') }}">log in</a> to comment.</p>
+        </article>
+        {% endif %}
+
+        {% for comment in comments %}
+        <article>
+          <blockquote>{{ comment.content }}</blockquote>
+          <footer>
+            <div class="grid">
+              <div>
+                <small><strong>By:</strong> {{ comment.author_name }}</small>
+              </div>
+              <div class="text-right">
+                <small><strong>Posted : </strong> {{ comment.created_at | format_time if comment.created_at else 'recently' }}</small>
+              </div>
+            </div>
+          </footer>
+        </article>
+        {% endfor %}
+
+        {% if not comments %}
+        <article class="secondary">
+          <p>No comments.</p>
+        </article>
+        {% endif %}
+      </section>
+    </div>
+  </div>
+</main>
+{% endblock %}
