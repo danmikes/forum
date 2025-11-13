@@ -9,15 +9,21 @@
           <h1>{{ post.title }}</h1>
         </header>
         <p>{{ post.content }}</p>
-        <footer>
-          <div class="grid">
-            <div>
-              <small><strong>By:</strong> {{ post.author_name }}</small>
-            </div>
-            <div class="text-right">
-              <small><strong>Posted : </strong> {{ post.created_at | format_time if post.created_at else 'Recently' }}</small>
-            </div>
+        <footer class="grid">
+          <div>
+            <small><strong>By:</strong> {{ post.author_name }}</small>
+            <br>
+            <small><strong>Posted : </strong> {{ post.created_at | format_time if post.created_at else 'Recently' }}</small>
           </div>
+            {% if session.is_admin %}
+            <div class="text-right">
+              <form action="{{ url_for('main.delete_post', post_id=post.id) }}" method="POST" style="display: inline;">
+                <button type="submit" class="secondary small" onclick="return confirm('Delete post?')">
+                  Delete
+                </button>
+              </form>
+            </div>
+            {% endif %}
         </footer>
       </article>
 

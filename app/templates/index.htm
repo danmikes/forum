@@ -15,22 +15,28 @@
             <h2><a href="{{ url_for('main.view_post', post_id=post.id) }}">{{ post.title }}</a></h2>
           </header>
           <p>{{ post.content[:200] }}{% if post.content|length > 200 %}...{% endif %}</p>
-          <footer>
-            <div class="grid">
-              <div>
-                <small><strong>By:</strong> {{ post.author_name }}</small>
-              </div>
-              <div class="text-right">
-                <small><strong>Posted : </strong>{{ post.created_at | format_time }}</small>
-              </div>
+          <footer class="grid">
+            <div>
+              <small><strong>By:</strong> {{ post.author_name }}</small>
+              <br>
+              <small><strong>Posted : </strong>{{ post.created_at | format_time }}</small>
             </div>
+            {% if session.is_admin %}
+            <div class="text-right">
+              <form action="{{ url_for('main.delete_post', post_id=post.id) }}" method="POST" style="display: inline;">
+                <button type="submit" class="secondary small" onclick="return confirm('Delete post?')">
+                  Delete
+                </button>
+              </form>
+            </div>
+            {% endif %}
           </footer>
         </article>
         {% endfor %}
       {% else %}
         <article class="text-center">
           <p>No posts</p>
-          <a href="{{ url_for('main.create_post') }}" role="button" class="secondary">Create the first post</a>
+          <a href="{{ url_for('main.create_post') }}" role="button" class="secondary">Create post</a>
         </article>
       {% endif %}
     </section>
@@ -38,9 +44,9 @@
     <aside class="col-12 col-md-4">
       <article>
         <header>
-          <h3>About</h3>
+          <h3>Purpose</h3>
         </header>
-        <p>Welcome.</p>
+        <p>Let's discuss essential matter</p>
         <footer>
           {% if session.username %}
             <a href="{{ url_for('main.create_post') }}" role="button" class="primary">Create post</a>

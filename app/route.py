@@ -6,6 +6,11 @@ from datetime import timedelta
 
 main = Blueprint('main', __name__)
 
+ADMIN_USERS = ['daniel']
+
+def is_admin():
+  return session.get('username') in ADMIN_USERS
+
 @main.app_template_filter('format_time')
 def format_time(date_value):
   if not date_value:
@@ -37,6 +42,7 @@ def login():
     username = request.form.get('username')
     session['user_id'] = str(uuid.uuid4())
     session['username'] = username
+    session['is_admin'] = username in ADMIN_USERS
     flash('Logged in', 'success')
     return redirect(url_for('main.index'))
   return render_template('login.htm')
@@ -47,6 +53,7 @@ def register():
     username = request.form.get('username')
     session['user_id'] = str(uuid.uuid4())
     session['username'] = username
+    session['is_admin'] = username in ADMIN_USERS
     flash('Account created!', 'success')
     return redirect(url_for('main.index'))
   return render_template('register.htm')
@@ -110,6 +117,29 @@ def view_post(post_id):
     return redirect(url_for('main.index'))
 
   return render_template('post.htm', post=post, comments=comments)
+
+@main.route('/post/<post_id>/delete', methods=['POST'])
+def delete_post(post_id):
+  if 'user_id' not in session:
+    flash('Log in to delete post', 'error')
+    return redirect(url_for('main.login'))
+
+  if not session.get('is_admin'):
+    flash('Only admin users can delete posts', 'error')
+    return redirect(url_for('main.view_post', post_id=post_id))
+
+  post = supabase_client.get_post(post_id)
+  if not post:
+    flash('Post not found', 'error')
+    return redirect(url_for('main.index'))
+
+  result = supabase_client.delete_post(post_id)
+  if result:
+    flash('Post deleted', 'success')
+  else:
+    flash('Error deleting post', 'error')
+
+  return redirect(url_for('main.index'))
 
 @main.route('/profile')
 def profile():
