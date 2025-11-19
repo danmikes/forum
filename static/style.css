@@ -1,0 +1,24 @@
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background-color: #121212;
+}
+
+.post-footer .grid {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post-footer .text-right {
+  text-align: right;
+}
+
+.post-footer small {
+  white-space: nowrap;
+  font-size: 0.875rem;
+}
