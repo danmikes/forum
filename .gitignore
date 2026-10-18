@@ -1,0 +1,13 @@
+
+# build
+/build/
+/node_modules/
+/.svelte-kit/
+
+# develop
+.vscode/
+.env
+*.log
+
+# system
+*.DS_Store
